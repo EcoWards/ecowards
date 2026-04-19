@@ -1,6 +1,8 @@
 import os
 import mysql.connector
 from datetime import datetime
+from flask import Flask
+app = Flask(__name__)
 
 conn = mysql.connector.connect(
     host=os.getenv("MYSQLHOST") or "localhost",
