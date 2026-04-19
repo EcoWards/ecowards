@@ -95,19 +95,88 @@ def ping():
 @app.route("/form")
 def form():
     return """
-    <h2>Registro de Reciclaje ♻️</h2>
-    <form action="/guardar" method="post">
-        Nombre: <input name="usuario"><br><br>
-        Material: 
-        <select name="material">
-            <option value="carton">Cartón</option>
-            <option value="plastico">Plástico</option>
-            <option value="lata">Lata</option>
-            <option value="papel">Papel</option>
-        </select><br><br>
-        Cantidad: <input name="cantidad" type="number"><br><br>
-        <button type="submit">Guardar</button>
-    </form>
+    <html>
+    <head>
+        <title>EcoRewards ♻️</title>
+        <style>
+            body {
+                font-family: Arial;
+                background: #f4f6f8;
+                text-align: center;
+            }
+
+            .container {
+                background: white;
+                padding: 30px;
+                margin: 50px auto;
+                width: 350px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            }
+
+            h2 {
+                color: #2ecc71;
+            }
+
+            input, select {
+                width: 90%;
+                padding: 10px;
+                margin: 10px 0;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+            button {
+                background: #2ecc71;
+                color: white;
+                border: none;
+                padding: 10px;
+                width: 95%;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            button:hover {
+                background: #27ae60;
+            }
+
+            a {
+                display: block;
+                margin-top: 15px;
+                color: #3498db;
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h2>♻️ EcoRewards</h2>
+
+            <form action="/guardar" method="post">
+                <input name="usuario" placeholder="Tu nombre" required>
+
+                <select name="material">
+                    <option value="carton">Cartón</option>
+                    <option value="plastico">Plástico</option>
+                    <option value="lata">Lata</option>
+                    <option value="papel">Papel</option>
+                </select>
+
+                <input name="cantidad" type="number" placeholder="Cantidad" required>
+
+                <button type="submit">Guardar ♻️</button>
+            </form>
+
+            <a href="/ranking">Ver Ranking 🏆</a>
+        </div>
+    </body>
+    </html>
     """
 
 # 🔹 GUARDAR
@@ -140,10 +209,62 @@ def ver_ranking():
     
     datos = cursor.fetchall()
 
-    html = "<h2>Ranking 🏆</h2><ul>"
+    html = """
+    <html>
+    <head>
+        <style>
+            body {
+                font-family: Arial;
+                background: #f4f6f8;
+                text-align: center;
+            }
+
+            .container {
+                background: white;
+                padding: 30px;
+                margin: 50px auto;
+                width: 400px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            }
+
+            h2 {
+                color: #f39c12;
+            }
+
+            li {
+                list-style: none;
+                padding: 10px;
+                margin: 5px;
+                background: #ecf0f1;
+                border-radius: 5px;
+            }
+
+            a {
+                display: block;
+                margin-top: 15px;
+                color: #3498db;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h2>🏆 Ranking</h2>
+            <ul>
+    """
+
     for fila in datos:
-        html += f"<li>{fila[0]}: {fila[1]} puntos</li>"
-    html += "</ul>"
+        html += f"<li>{fila[0]} - {fila[1]} puntos</li>"
+
+    html += """
+            </ul>
+            <a href="/form">← Volver</a>
+        </div>
+    </body>
+    </html>
+    """
 
     return html
 
