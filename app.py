@@ -80,13 +80,26 @@ print("Servidor iniciado correctamente")
 def home():
     return "Servidor funcionando 🚀"
 
+# 🔹 PING
 @app.route("/ping")
 def ping():
     return "pong"
 
+# 🔹 TEST (AQUÍ VA EL INSERT)
 @app.route("/test")
 def test():
-    return "TEST OK"
+    try:
+        cursor.execute("""
+            INSERT INTO reciclaje (usuario, material, cantidad, puntos, fecha)
+            VALUES (%s, %s, %s, %s, %s)
+        """, ("Rodrigo", "carton", 2, 6, datetime.now()))
+
+        conn.commit()
+
+        return "INSERT OK ✅"
+
+    except Exception as e:
+        return f"ERROR: {str(e)}"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
