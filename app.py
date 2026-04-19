@@ -2,7 +2,7 @@ import os
 import mysql.connector
 import pytz
 from datetime import datetime
-from flask import Flask
+from flask import Flask, request
 app = Flask(__name__)
 
 zona = pytz.timezone("America/El_Salvador")
@@ -54,7 +54,7 @@ def registrar(usuario, material, cantidad):
     cursor.execute("""
         INSERT INTO reciclaje (usuario, material, cantidad, puntos, fecha)
         VALUES (%s, %s, %s, %s, %s)
-    """, (usuario, material, cantidad, puntos, datetime.now()))
+    """, (usuario, material, cantidad, puntos, obtener_fecha()))
 
     conn.commit()
 
@@ -91,21 +91,61 @@ def home():
 def ping():
     return "pong"
 
-# 🔹 TEST (AQUÍ VA EL INSERT)
-@app.route("/test")
-def test():
-    try:
-        cursor.execute("""
-            INSERT INTO reciclaje (usuario, material, cantidad, puntos, fecha)
-            VALUES (%s, %s, %s, %s, %s)
-        """, ("Rodrigo", "carton", 2, 6, obtener_fecha()))
+# 🔹 FORMULARIO
+@app.route("/form")
+def form():
+    return """
+    <h2>Registro de Reciclaje ♻️</h2>
+    <form action="/guardar" method="post">
+        Nombre: <input name="usuario"><br><br>
+        Material: 
+        <select name="material">
+            <option value="carton">Cartón</option>
+            <option value="plastico">Plástico</option>
+            <option value="lata">Lata</option>
+            <option value="papel">Papel</option>
+        </select><br><br>
+        Cantidad: <input name="cantidad" type="number"><br><br>
+        <button type="submit">Guardar</button>
+    </form>
+    """
 
-        conn.commit()
+# 🔹 GUARDAR
+@app.route("/guardar", methods=["POST"])
+def guardar():
+    usuario = request.form["usuario"]
+    material = request.form["material"]
+    cantidad = int(request.form["cantidad"])
 
-        return "INSERT OK ✅"
+    puntos = materiales[material] * cantidad
 
-    except Exception as e:
-        return f"ERROR: {str(e)}"
+    cursor.execute("""
+        INSERT INTO reciclaje (usuario, material, cantidad, puntos, fecha)
+        VALUES (%s, %s, %s, %s, %s)
+    """, (usuario, material, cantidad, puntos, obtener_fecha()))
+
+    conn.commit()
+
+    return f"{usuario} guardado con {puntos} puntos ✅"
+
+# 🔹 RANKING
+@app.route("/ranking")
+def ver_ranking():
+    cursor.execute("""
+        SELECT usuario, SUM(puntos) 
+        FROM reciclaje 
+        GROUP BY usuario 
+        ORDER BY SUM(puntos) DESC
+    """)
+    
+    datos = cursor.fetchall()
+
+    html = "<h2>Ranking 🏆</h2><ul>"
+    for fila in datos:
+        html += f"<li>{fila[0]}: {fila[1]} puntos</li>"
+    html += "</ul>"
+
+    return html
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
