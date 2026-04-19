@@ -2,13 +2,12 @@ import os
 import mysql.connector
 from datetime import datetime
 
-# 🔗 CONEXIÓN AUTOMÁTICA (Railway detecta estas variables)
 conn = mysql.connector.connect(
-    host=os.getenv("MYSQLHOST"),
-    user=os.getenv("MYSQLUSER"),
-    password=os.getenv("MYSQLPASSWORD"),
-    database=os.getenv("MYSQLDATABASE"),
-    port=int(os.getenv("MYSQLPORT"))
+    host=os.getenv("MYSQLHOST") or "localhost",
+    user=os.getenv("MYSQLUSER") or "root",
+    password=os.getenv("MYSQLPASSWORD") or "",
+    database=os.getenv("MYSQLDATABASE") or "",
+    port=int(os.getenv("MYSQLPORT") or 3306)
 )
 
 cursor = conn.cursor()
