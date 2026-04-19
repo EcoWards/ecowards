@@ -6,7 +6,9 @@ from flask import Flask
 app = Flask(__name__)
 
 zona = pytz.timezone("America/El_Salvador")
-datetime.now(zona)
+
+def obtener_fecha():
+    return datetime.now(zona).replace(tzinfo=None)
 
 conn = mysql.connector.connect(
     host=os.getenv("MYSQLHOST") or "localhost",
@@ -96,7 +98,7 @@ def test():
         cursor.execute("""
             INSERT INTO reciclaje (usuario, material, cantidad, puntos, fecha)
             VALUES (%s, %s, %s, %s, %s)
-        """, ("Rodrigo", "carton", 2, 6, datetime.now()))
+        """, ("Rodrigo", "carton", 2, 6, obtener_fecha()))
 
         conn.commit()
 
