@@ -126,7 +126,7 @@ def guardar():
 
     conn.commit()
 
-    return f"{usuario} guardado con {puntos} puntos ✅"
+    return f"{usuario} guardado con {puntos} puntos"
 
 # 🔹 RANKING
 @app.route("/ranking")
