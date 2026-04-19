@@ -1,8 +1,12 @@
 import os
 import mysql.connector
+import pytz
 from datetime import datetime
 from flask import Flask
 app = Flask(__name__)
+
+zona = pytz.timezone("America/El_Salvador")
+datetime.now(zona)
 
 conn = mysql.connector.connect(
     host=os.getenv("MYSQLHOST") or "localhost",
