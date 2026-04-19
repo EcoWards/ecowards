@@ -84,5 +84,9 @@ def home():
 def ping():
     return "pong"
 
+@app.route("/test")
+def test():
+    return "TEST OK"
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
