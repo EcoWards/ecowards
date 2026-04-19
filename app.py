@@ -76,9 +76,9 @@ def ranking():
 # 🔥 EJECUCIÓN AUTOMÁTICA (Railway necesita esto)
 print("Servidor iniciado correctamente")
 
-@app.route("/test")
-def test():
-    return "Dato insertado"
+@app.route("/")
+def home():
+    return "Servidor funcionando 🚀"
 
 @app.route("/ping")
 def ping():
