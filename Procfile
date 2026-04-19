@@ -1,1 +1,1 @@
-worker: python ecowards.py
+worker: python app.py
