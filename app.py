@@ -100,7 +100,8 @@ def form():
     return """
     <html>
     <head>
-        <title>EcoWards ♻️</title>
+        <title>EcoWards</title>
+        <link rel="icon" href="/static/Logo.jpeg">
         <style>
             body {
                 font-family: Arial;
@@ -159,7 +160,9 @@ def form():
 
     <body>
         <div class="container">
-            <h2>♻️ EcoWards</h2>
+            <h2>
+            <img src="/static/Logo.jpeg" width="45">
+            EcoWards</h2>
 
             <form action="/guardar" method="post">
                 <input name="usuario" placeholder="Tu nombre" required>
@@ -186,7 +189,7 @@ def form():
 @app.route("/guardar", methods=["POST"])
 def guardar():
     try:
-        conn, cursor = get_db()  # 🔥 conexión nueva
+        conn, cursor = get_db()
 
         usuario = request.form["usuario"]
         material = request.form["material"]
@@ -200,9 +203,62 @@ def guardar():
         """, (usuario, material, cantidad, puntos, obtener_fecha()))
 
         conn.commit()
-        conn.close()  # 🔥 cerrar conexión
+        conn.close()
 
-        return f"{usuario} guardado con {puntos} puntos ✅"
+        return f"""
+        <html>
+        <head>
+        <style>
+            body {{
+                font-family: Arial;
+                text-align: center;
+                background: #f4f6f8;
+            }}
+
+            .box {{
+                background: white;
+                padding: 30px;
+                margin: 100px auto;
+                width: 350px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            }}
+
+            button {{
+                background: #2ecc71;
+                color: white;
+                border: none;
+                padding: 10px;
+                width: 100%;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }}
+
+            button:hover {{
+                background: #27ae60;
+            }}
+        </style>
+        </head>
+
+        <body>
+        <div class="box">
+            <h3>{usuario} ha reciclado {cantidad} de {material}</h3>
+            <p>Ganaste {puntos} puntos </p>
+
+            <a href="/form">
+                <button>⬅️ Volver</button>
+            </a>
+
+            <br><br>
+
+            <a href="/ranking">
+                <button>🏆 Ver Ranking</button>
+            </a>
+        </div>
+        </body>
+        </html>
+        """
 
     except Exception as e:
         return f"ERROR: {str(e)}"
