@@ -10,15 +10,17 @@ zona = pytz.timezone("America/El_Salvador")
 def obtener_fecha():
     return datetime.now(zona).replace(tzinfo=None)
 
-conn = mysql.connector.connect(
-    host=os.getenv("MYSQLHOST") or "localhost",
-    user=os.getenv("MYSQLUSER") or "root",
-    password=os.getenv("MYSQLPASSWORD") or "",
-    database=os.getenv("MYSQLDATABASE") or "",
-    port=int(os.getenv("MYSQLPORT") or 3306)
-)
+def get_db():
+    conn = mysql.connector.connect(
+        host=os.getenv("MYSQLHOST"),
+        user=os.getenv("MYSQLUSER"),
+        password=os.getenv("MYSQLPASSWORD"),
+        database=os.getenv("MYSQLDATABASE"),
+        port=int(os.getenv("MYSQLPORT") or 3306)
+    )
+    return conn, conn.cursor()
 
-cursor = conn.cursor()
+conn, cursor = get_db()
 
 # 🗄️ CREAR TABLA SI NO EXISTE
 cursor.execute("""
@@ -33,6 +35,7 @@ CREATE TABLE IF NOT EXISTS reciclaje (
 """)
 
 conn.commit()
+conn.close()
 
 # 🎯 PUNTOS POR MATERIAL
 materiales = {
@@ -200,6 +203,8 @@ def guardar():
 # 🔹 RANKING
 @app.route("/ranking")
 def ver_ranking():
+    conn, cursor = get_db()
+
     cursor.execute("""
         SELECT usuario, SUM(puntos) 
         FROM reciclaje 
@@ -208,6 +213,8 @@ def ver_ranking():
     """)
     
     datos = cursor.fetchall()
+    conn.close()
+
 
     html = """
     <html>
