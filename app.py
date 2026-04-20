@@ -100,7 +100,7 @@ def form():
     return """
     <html>
     <head>
-        <title>EcoRewards ♻️</title>
+        <title>EcoWards ♻️</title>
         <style>
             body {
                 font-family: Arial;
