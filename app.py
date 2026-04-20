@@ -159,7 +159,7 @@ def form():
 
     <body>
         <div class="container">
-            <h2>♻️ EcoRewards</h2>
+            <h2>♻️ EcoWards</h2>
 
             <form action="/guardar" method="post">
                 <input name="usuario" placeholder="Tu nombre" required>
