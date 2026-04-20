@@ -185,19 +185,27 @@ def form():
 # 🔹 GUARDAR
 @app.route("/guardar", methods=["POST"])
 def guardar():
-    usuario = request.form["usuario"]
-    material = request.form["material"]
-    cantidad = int(request.form["cantidad"])
+    try:
+        conn, cursor = get_db()  # 🔥 conexión nueva
 
-    puntos = materiales[material] * cantidad
+        usuario = request.form["usuario"]
+        material = request.form["material"]
+        cantidad = int(request.form["cantidad"])
 
-    cursor.execute("""
-        INSERT INTO reciclaje (usuario, material, cantidad, puntos, fecha)
-        VALUES (%s, %s, %s, %s, %s)
-    """, (usuario, material, cantidad, puntos, obtener_fecha()))
+        puntos = materiales[material] * cantidad
 
-    conn.commit()
+        cursor.execute("""
+            INSERT INTO reciclaje (usuario, material, cantidad, puntos, fecha)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (usuario, material, cantidad, puntos, obtener_fecha()))
 
+        conn.commit()
+        conn.close()  # 🔥 cerrar conexión
+
+        return f"{usuario} guardado con {puntos} puntos ✅"
+
+    except Exception as e:
+        return f"ERROR: {str(e)}"
     return f"{usuario} guardado con {puntos} puntos"
 
 # 🔹 RANKING
