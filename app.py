@@ -22,7 +22,7 @@ def get_db():
 
 conn, cursor = get_db()
 
-# 🗄️ CREAR TABLA SI NO EXISTE
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS reciclaje (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS reciclaje (
 conn.commit()
 conn.close()
 
-# 🎯 PUNTOS POR MATERIAL
 materiales = {
     "carton": 3,
     "lata": 5,
@@ -45,7 +44,6 @@ materiales = {
     "papel": 2
 }
 
-# ➕ REGISTRAR RECICLAJE
 def registrar(usuario, material, cantidad):
     material = material.lower()
 
@@ -63,7 +61,7 @@ def registrar(usuario, material, cantidad):
 
     return f"{usuario} ganó {puntos} puntos"
 
-# 📊 VER PUNTOS
+
 def ver_puntos(usuario):
     cursor.execute("""
         SELECT SUM(puntos) FROM reciclaje WHERE usuario = %s
@@ -72,7 +70,7 @@ def ver_puntos(usuario):
     resultado = cursor.fetchone()[0]
     return resultado if resultado else 0
 
-# 📈 RANKING
+
 def ranking():
     cursor.execute("""
         SELECT usuario, SUM(puntos) as total
@@ -82,7 +80,7 @@ def ranking():
     """)
     return cursor.fetchall()
 
-# 🔥 EJECUCIÓN AUTOMÁTICA (Railway necesita esto)
+
 print("Servidor iniciado correctamente")
 
 @app.route("/")
@@ -101,7 +99,7 @@ def form():
     <html>
     <head>
         <title>EcoWards</title>
-        <link rel="icon" href="/static/Logo.jpeg">
+        <link rel="icon" href="/static/Logo.png">
         <style>
             body {
                 font-family: Arial;
@@ -161,7 +159,7 @@ def form():
     <body>
         <div class="container">
             <h2>
-            <img src="/static/Logo.jpeg" width="45">
+            <img src="/static/Logo.png" width="45">
             EcoWards</h2>
 
             <form action="/guardar" method="post">
@@ -185,7 +183,7 @@ def form():
     </html>
     """
 
-# 🔹 GUARDAR
+
 @app.route("/guardar", methods=["POST"])
 def guardar():
     try:
@@ -262,7 +260,6 @@ def guardar():
 
     except Exception as e:
         return f"ERROR: {str(e)}"
-    return f"{usuario} guardado con {puntos} puntos"
 
 # 🔹 RANKING
 @app.route("/ranking")
