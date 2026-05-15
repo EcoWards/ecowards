@@ -5,7 +5,6 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-print("MYSQLHOST =", os.getenv("MYSQLHOST"))
 CORS(app)
 
 # =========================
@@ -14,11 +13,11 @@ CORS(app)
 def get_db():
 
     conn = mysql.connector.connect(
-        host=os.getenv("MYSQLHOST"),
-        user=os.getenv("MYSQLUSER"),
-        password=os.getenv("MYSQLPASSWORD"),
-        database=os.getenv("MYSQLDATABASE"),
-        port=int(os.getenv("MYSQLPORT", 3306))
+        host=os.environ.get("MYSQLHOST"),
+        user=os.environ.get("MYSQLUSER"),
+        password=os.environ.get("MYSQLPASSWORD"),
+        database=os.environ.get("MYSQLDATABASE"),
+        port=int(os.environ.get("MYSQLPORT", 3306))
     )
 
     return conn, conn.cursor(dictionary=True)
@@ -60,7 +59,7 @@ try:
     conn.commit()
     conn.close()
 
-    print("✅ MySQL conectado correctamente")
+    print("✅ MySQL conectado")
 
 except Exception as e:
     print("❌ Error MySQL:", e)
@@ -74,7 +73,7 @@ rewards = [
     {"id": 3, "nombre": "Paleta", "costo": 400},
     {"id": 4, "nombre": "Almuerzo", "costo": 1000},
     {"id": 5, "nombre": "Cine", "costo": 1300},
-    {"id": 6, "nombre": "1 Hora Well", "costo": 2500},
+    {"id": 6, "nombre": "1 Hora Well", "costo": 2500}
 ]
 
 # =========================
