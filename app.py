@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
+print("MYSQLHOST =", os.getenv("MYSQLHOST"))
 CORS(app)
 
 # =========================
