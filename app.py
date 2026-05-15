@@ -17,7 +17,9 @@ def get_db():
     if not url:
         url = os.environ.get("MYSQL_PUBLIC_URL")
 
-    # mysql://user:password@host:port/database
+    if not url:
+        raise Exception("MYSQL_URL no encontrada")
+
     url = url.replace("mysql://", "")
 
     creds, host_part = url.split("@")
@@ -37,6 +39,7 @@ def get_db():
     )
 
     return conn, conn.cursor(dictionary=True)
+
 # =========================
 # CREAR TABLAS
 # =========================
@@ -382,7 +385,11 @@ def index():
 
 @app.route("/<path:path>")
 def static_files(path):
-    return send_from_directory(".", path)
+
+    if os.path.exists(path):
+        return send_from_directory(".", path)
+
+    return "Archivo no encontrado", 404
 
 # =========================
 # RUN

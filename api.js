@@ -1,4 +1,4 @@
-const BASE_URL = "https://TU-PROYECTO.up.railway.app/api";
+const BASE_URL = "https://ecowards-production.up.railway.app/api";
 
 /* =========================
    🔐 LOGIN
