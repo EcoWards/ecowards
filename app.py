@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import mysql.connector
 import os
@@ -11,6 +11,7 @@ CORS(app)
 # MYSQL
 # =========================
 def get_db():
+
     conn = mysql.connector.connect(
         host=os.getenv("MYSQLHOST"),
         user=os.getenv("MYSQLUSER"),
@@ -58,10 +59,10 @@ try:
     conn.commit()
     conn.close()
 
-    print("MySQL conectado correctamente")
+    print("✅ MySQL conectado correctamente")
 
 except Exception as e:
-    print("Error MySQL:", e)
+    print("❌ Error MySQL:", e)
 
 # =========================
 # REWARDS
@@ -81,32 +82,40 @@ rewards = [
 @app.route("/api/login", methods=["POST"])
 def login():
 
-    data = request.json
+    try:
 
-    username = data.get("username")
-    password = data.get("password")
+        data = request.json
 
-    conn, cursor = get_db()
+        username = data.get("username")
+        password = data.get("password")
 
-    cursor.execute("""
-        SELECT * FROM users
-        WHERE username=%s AND password=%s
-    """, (username, password))
+        conn, cursor = get_db()
 
-    user = cursor.fetchone()
+        cursor.execute("""
+            SELECT *
+            FROM users
+            WHERE username=%s AND password=%s
+        """, (username, password))
 
-    conn.close()
+        user = cursor.fetchone()
 
-    if not user:
+        conn.close()
+
+        if not user:
+            return jsonify({
+                "error": "Usuario o contraseña incorrectos"
+            }), 401
+
         return jsonify({
-            "error": "Usuario o contraseña incorrectos"
-        }), 401
+            "success": True,
+            "username": user["username"],
+            "nombre": user["nombre"]
+        })
 
-    return jsonify({
-        "success": True,
-        "username": user["username"],
-        "nombre": user["nombre"]
-    })
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 # =========================
 # USER
@@ -114,24 +123,31 @@ def login():
 @app.route("/api/user/<username>")
 def get_user(username):
 
-    conn, cursor = get_db()
+    try:
 
-    cursor.execute("""
-        SELECT nombre, ecoCoins, objetos
-        FROM users
-        WHERE username=%s
-    """, (username,))
+        conn, cursor = get_db()
 
-    user = cursor.fetchone()
+        cursor.execute("""
+            SELECT nombre, ecoCoins, objetos
+            FROM users
+            WHERE username=%s
+        """, (username,))
 
-    conn.close()
+        user = cursor.fetchone()
 
-    if not user:
+        conn.close()
+
+        if not user:
+            return jsonify({
+                "error": "Usuario no encontrado"
+            }), 404
+
+        return jsonify(user)
+
+    except Exception as e:
         return jsonify({
-            "error": "Usuario no encontrado"
-        }), 404
-
-    return jsonify(user)
+            "error": str(e)
+        }), 500
 
 # =========================
 # HISTORIAL
@@ -139,20 +155,27 @@ def get_user(username):
 @app.route("/api/historial/<username>")
 def historial(username):
 
-    conn, cursor = get_db()
+    try:
 
-    cursor.execute("""
-        SELECT accion
-        FROM historial
-        WHERE username=%s
-        ORDER BY fecha DESC
-    """, (username,))
+        conn, cursor = get_db()
 
-    datos = cursor.fetchall()
+        cursor.execute("""
+            SELECT accion
+            FROM historial
+            WHERE username=%s
+            ORDER BY fecha DESC
+        """, (username,))
 
-    conn.close()
+        datos = cursor.fetchall()
 
-    return jsonify([x["accion"] for x in datos])
+        conn.close()
+
+        return jsonify([x["accion"] for x in datos])
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 # =========================
 # REWARDS
@@ -167,27 +190,34 @@ def get_rewards():
 @app.route("/api/ranking")
 def ranking():
 
-    conn, cursor = get_db()
+    try:
 
-    cursor.execute("""
-        SELECT nombre, ecoCoins
-        FROM users
-        ORDER BY ecoCoins DESC
-    """)
+        conn, cursor = get_db()
 
-    datos = cursor.fetchall()
+        cursor.execute("""
+            SELECT nombre, ecoCoins
+            FROM users
+            ORDER BY ecoCoins DESC
+        """)
 
-    conn.close()
+        datos = cursor.fetchall()
 
-    ranking = []
+        conn.close()
 
-    for x in datos:
-        ranking.append({
-            "nombre": x["nombre"],
-            "puntos": x["ecoCoins"]
-        })
+        ranking = []
 
-    return jsonify(ranking)
+        for x in datos:
+            ranking.append({
+                "nombre": x["nombre"],
+                "puntos": x["ecoCoins"]
+            })
+
+        return jsonify(ranking)
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 # =========================
 # RECICLAR
@@ -195,61 +225,65 @@ def ranking():
 @app.route("/api/reciclar", methods=["POST"])
 def reciclar():
 
-    data = request.json
+    try:
 
-    username = data["username"]
-    tipo = data["tipo"]
-    cantidad = int(data["cantidad"])
+        data = request.json
 
-    materiales = {
-        "botella": 3,
-        "lata": 4,
-        "papel": 1,
-        "carton": 2
-    }
+        username = data["username"]
+        tipo = data["tipo"]
+        cantidad = int(data["cantidad"])
 
-    if tipo not in materiales:
+        materiales = {
+            "botella": 3,
+            "lata": 4,
+            "papel": 1,
+            "carton": 2
+        }
+
+        if tipo not in materiales:
+            return jsonify({
+                "error": "Material inválido"
+            }), 400
+
+        ecoCoins = materiales[tipo] * cantidad
+
+        conn, cursor = get_db()
+
+        cursor.execute("""
+            UPDATE users
+            SET ecoCoins = ecoCoins + %s,
+                objetos = objetos + %s
+            WHERE username=%s
+        """, (ecoCoins, cantidad, username))
+
+        accion = f"{cantidad} {tipo}(s) +{ecoCoins} EcoCoins"
+
+        cursor.execute("""
+            INSERT INTO historial(username, accion, fecha)
+            VALUES(%s, %s, %s)
+        """, (username, accion, datetime.now()))
+
+        conn.commit()
+
+        cursor.execute("""
+            SELECT *
+            FROM users
+            WHERE username=%s
+        """, (username,))
+
+        user = cursor.fetchone()
+
+        conn.close()
+
         return jsonify({
-            "error": "Material inválido"
-        }), 400
+            "mensaje": f"Ganaste {ecoCoins} EcoCoins",
+            "user": user
+        })
 
-    ecoCoins = materiales[tipo] * cantidad
-
-    conn, cursor = get_db()
-
-    # actualizar usuario
-    cursor.execute("""
-        UPDATE users
-        SET ecoCoins = ecoCoins + %s,
-            objetos = objetos + %s
-        WHERE username=%s
-    """, (ecoCoins, cantidad, username))
-
-    # guardar historial
-    accion = f"{cantidad} {tipo}(s) +{ecoCoins} EcoCoins"
-
-    cursor.execute("""
-        INSERT INTO historial(username, accion, fecha)
-        VALUES(%s, %s, %s)
-    """, (username, accion, datetime.now()))
-
-    conn.commit()
-
-    # obtener usuario actualizado
-    cursor.execute("""
-        SELECT *
-        FROM users
-        WHERE username=%s
-    """, (username,))
-
-    user = cursor.fetchone()
-
-    conn.close()
-
-    return jsonify({
-        "mensaje": f"Ganaste {ecoCoins} EcoCoins",
-        "user": user
-    })
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 # =========================
 # CANJEAR
@@ -257,69 +291,89 @@ def reciclar():
 @app.route("/api/canjear", methods=["POST"])
 def canjear():
 
-    data = request.json
+    try:
 
-    username = data["username"]
-    reward_id = data["rewardId"]
+        data = request.json
 
-    reward = next((r for r in rewards if r["id"] == reward_id), None)
+        username = data["username"]
+        reward_id = data["rewardId"]
 
-    if not reward:
-        return jsonify({
-            "error": "Reward no encontrado"
-        }), 404
+        reward = next(
+            (r for r in rewards if r["id"] == reward_id),
+            None
+        )
 
-    conn, cursor = get_db()
+        if not reward:
+            return jsonify({
+                "error": "Reward no encontrado"
+            }), 404
 
-    cursor.execute("""
-        SELECT ecoCoins
-        FROM users
-        WHERE username=%s
-    """, (username,))
+        conn, cursor = get_db()
 
-    user = cursor.fetchone()
+        cursor.execute("""
+            SELECT ecoCoins
+            FROM users
+            WHERE username=%s
+        """, (username,))
 
-    if user["ecoCoins"] < reward["costo"]:
+        user = cursor.fetchone()
+
+        if user["ecoCoins"] < reward["costo"]:
+
+            conn.close()
+
+            return jsonify({
+                "error": "No tienes suficientes EcoCoins"
+            }), 400
+
+        nuevo = user["ecoCoins"] - reward["costo"]
+
+        cursor.execute("""
+            UPDATE users
+            SET ecoCoins=%s
+            WHERE username=%s
+        """, (nuevo, username))
+
+        accion = (
+            f"Canjeaste "
+            f"{reward['nombre']} "
+            f"-{reward['costo']} EC"
+        )
+
+        cursor.execute("""
+            INSERT INTO historial(username, accion, fecha)
+            VALUES(%s, %s, %s)
+        """, (username, accion, datetime.now()))
+
+        conn.commit()
+
         conn.close()
 
         return jsonify({
-            "error": "No tienes suficientes EcoCoins"
-        }), 400
+            "mensaje": "Canje exitoso"
+        })
 
-    nuevo = user["ecoCoins"] - reward["costo"]
-
-    cursor.execute("""
-        UPDATE users
-        SET ecoCoins=%s
-        WHERE username=%s
-    """, (nuevo, username))
-
-    accion = f"Canjeaste {reward['nombre']} -{reward['costo']} EC"
-
-    cursor.execute("""
-        INSERT INTO historial(username, accion, fecha)
-        VALUES(%s, %s, %s)
-    """, (username, accion, datetime.now()))
-
-    conn.commit()
-
-    conn.close()
-
-    return jsonify({
-        "mensaje": "Canje exitoso"
-    })
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 # =========================
-# HOME
+# FRONTEND
 # =========================
 @app.route("/")
-def home():
-    return "EcoWards funcionando 🚀"
+def index():
+    return send_from_directory(".", "login.html")
+
+@app.route("/<path:path>")
+def static_files(path):
+    return send_from_directory(".", path)
 
 # =========================
 # RUN
 # =========================
 if __name__ == "__main__":
+
     app.run(
         host="0.0.0.0",
         port=int(os.environ.get("PORT", 5000))
