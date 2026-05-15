@@ -1,3 +1,4 @@
+const BASE_URL = "https://ecowards-production.up.railway.app/api";
 import {
   getUser,
   getHistorial,
