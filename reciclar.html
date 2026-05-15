@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/png" href="img/logo.jpeg">
+  <meta charset="UTF-8">
+  <title>Reciclar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+
+
+<div class="login-container">
+
+  <h2>Reciclar</h2>
+
+  <form id="reciclarForm">
+
+    <select id="tipo">
+      <option value="botella">Botellas</option>
+      <option value="lata">Latas</option>
+      <option value="papel">Papel</option>
+      <option value="carton">Cartón</option>
+    </select>
+
+    <input type="number" id="cantidad" placeholder="Cantidad" min="1" required>
+
+    <button type="submit">Reciclar</button>
+
+  </form>
+
+  <button id="volver">← Volver</button>
+
+</div>
+
+<div id="toastRecycle" class="toast-center hidden"></div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<script src="reciclar.js"></script>
+</body>
+</html>

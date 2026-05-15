@@ -1,0 +1,561 @@
+* {
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f5f5f5;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+}
+
+html, body {
+  height: 100%;
+}
+
+/* CARDS */
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* DASHBOARD */
+.dashboard {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* FOOTER */
+.steps {
+  margin-top: auto;
+  display: flex;
+  background: #2e7d32;
+  color: white;
+  text-align: center;
+  font-weight: 500;
+}
+
+.steps div {
+  flex: 1;
+  padding: 12px;
+  position: relative;
+}
+
+/* línea divisoria */
+.steps div:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: rgba(255,255,255,0.5);
+}
+
+/* HISTORIAL */
+.history-card ul {
+  padding-left: 20px;
+}
+
+/* INPUTS Y SELECT (MEJORADOS) */
+.login-container input,
+.login-container select {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+/* LAYOUT PANELS */
+.left-panel, 
+.center-panel, 
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* LOGIN */
+.login-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  height: 100vh;
+}
+
+.login-container {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  width: 380px; /* MÁS GRANDE */
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.login-container h1 {
+  color: #2e7d32;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.login-container button:hover {
+  background: #388e3c;
+}
+
+/* LOGOUT */
+.logout {
+  background: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* LOGO */
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.logo img {
+  height: 40px;
+  object-fit: contain;
+}
+
+.logo span {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+/* RANKING */
+.ranking-card {
+  background: #2e7d32;
+  color: white;
+}
+
+.ranking-card ol {
+  padding-left: 20px;
+}
+
+/* RECYCLE CARD */
+.recycle-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BOTÓN RECICLAR (MEJORADO) */
+#recycleBtn {
+  padding: 18px;
+  width: 100%;
+  font-size: 18px;
+  border: none;
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+  cursor: pointer;
+  border-radius: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#recycleBtn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+#recycleBtn:active {
+  transform: scale(0.98);
+}
+
+/* REWARDS */
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.reward {
+  background: #e8f5e9;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.reward button {
+  margin-top: 5px;
+  width: 100%;
+  border: none;
+  padding: 5px;
+  background: #4caf50;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#confirmBtn {
+  background: #4caf50;
+  color: white;
+}
+
+#cancelBtn {
+  background: #ccc;
+}
+
+/* TOAST (notificación bonita) */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #2e7d32;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  font-weight: 500;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 2000;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hidden {
+  display: none;
+}
+
+/* BOTÓN DESHABILITADO */
+.btn-disabled {
+  background: #e53935 !important;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.btn-disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* TOAST CENTRADO */
+.toast-center {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #4caf50;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 2000;
+}
+
+.toast-center.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* CONFETI */
+#confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1500;
+}
+
+/* CUPÓN */
+.coupon-code {
+  margin: 15px 0;
+  padding: 15px;
+  font-size: 20px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  background: #e8f5e9;
+  border: 2px dashed #4caf50;
+  border-radius: 10px;
+}
+
+.dashboard {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  gap: 20px;
+  padding: 20px;
+
+  height: calc(100vh - 70px); /* 🔥 clave */
+  overflow: hidden; /* evita scroll global */
+}
+
+.left-panel, .center-panel, .right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  min-height: 0; /* 🔥 IMPORTANTÍSIMO para scroll interno */
+}
+
+.history-card {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.rewards-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.rewards-grid {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.history-card::-webkit-scrollbar,
+.rewards-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-card::-webkit-scrollbar-thumb,
+.rewards-grid::-webkit-scrollbar-thumb {
+  background: #4caf50;
+  border-radius: 10px;
+}
+
+/* TABLA DE PRECIOS */
+.price-card {
+  padding: 15px;
+}
+
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.price-table tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.price-table td {
+  padding: 8px;
+}
+
+.price-table td:last-child {
+  text-align: right;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+.price-card {
+  border-left: 6px solid #4caf50;
+}
+
+.price-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.materials-list {
+  overflow-y: auto;
+  flex: 1;
+  margin-top: 10px;
+}
+
+.material-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.material-item span:last-child {
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+/* scrollbar bonito */
+.materials-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.materials-list::-webkit-scrollbar-thumb {
+  background: #4caf50;
+  border-radius: 10px;
+}
+
+/* BOTÓN CERRAR */
+#closeCoupon {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ocultar vistas */
+.hidden {
+  display: none;
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 25px;
+  background: #2e7d32;
+  color: white;
+}
+
+/* USER */
+.user-card {
+  border-left: 6px solid #4caf50;
+}
+
+/* ERROR */
+#errorMsg {
+  color: red;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+
+  /* 🔥 CLAVE: quitar restricciones de altura */
+  .dashboard {
+    grid-template-columns: 1fr;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* 🔥 IMPORTANTE */
+  .left-panel,
+  .center-panel,
+  .right-panel {
+    min-height: auto;
+  }
+
+  /* REWARDS */
+  .rewards-grid {
+    grid-template-columns: 1fr;
+    overflow: visible !important;
+  }
+
+  /* HISTORIAL */
+  .history-card {
+    overflow: visible !important;
+  }
+
+  /* MATERIALES */
+  .materials-list {
+    overflow: visible !important;
+  }
+
+  /* HEADER */
+  .topbar {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logout {
+    width: 100%;
+  }
+
+  /* FOOTER */
+  .steps {
+    flex-direction: column;
+  }
+
+  .steps div::after {
+    display: none;
+  }
+}
