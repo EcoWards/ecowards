@@ -12,30 +12,12 @@ CORS(app)
 # =========================
 def get_db():
 
-    url = os.environ.get("MYSQL_URL")
-
-    if not url:
-        url = os.environ.get("MYSQL_PUBLIC_URL")
-
-    if not url:
-        raise Exception("MYSQL_URL no encontrada")
-
-    url = url.replace("mysql://", "")
-
-    creds, host_part = url.split("@")
-
-    user, password = creds.split(":")
-
-    host_port, database = host_part.split("/")
-
-    host, port = host_port.split(":")
-
     conn = mysql.connector.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database,
-        port=int(port)
+        host=os.environ.get("MYSQLHOST"),
+        user=os.environ.get("MYSQLUSER"),
+        password=os.environ.get("MYSQLPASSWORD"),
+        database=os.environ.get("MYSQLDATABASE"),
+        port=int(os.environ.get("MYSQLPORT"))
     )
 
     return conn, conn.cursor(dictionary=True)
