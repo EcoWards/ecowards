@@ -24,38 +24,44 @@ def get_db():
 # =========================
 # CREAR TABLAS
 # =========================
-conn, cursor = get_db()
+try:
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100) UNIQUE,
-    password VARCHAR(100),
-    nombre VARCHAR(100),
-    ecoCoins INT DEFAULT 0,
-    objetos INT DEFAULT 0
-)
-""")
+    conn, cursor = get_db()
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS historial (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100),
-    accion TEXT,
-    fecha DATETIME
-)
-""")
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(100) UNIQUE,
+        password VARCHAR(100),
+        nombre VARCHAR(100),
+        ecoCoins INT DEFAULT 0,
+        objetos INT DEFAULT 0
+    )
+    """)
 
-# usuarios demo
-cursor.execute("""
-INSERT IGNORE INTO users(username, password, nombre, ecoCoins, objetos)
-VALUES
-('carlos_000145', '1234', 'Carlos', 1000, 50),
-('alfonso_000110', '1234', 'Alfonso', 60, 20)
-""")
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS historial (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(100),
+        accion TEXT,
+        fecha DATETIME
+    )
+    """)
 
-conn.commit()
-conn.close()
+    cursor.execute("""
+    INSERT IGNORE INTO users(username, password, nombre, ecoCoins, objetos)
+    VALUES
+    ('carlos_000145', '1234', 'Carlos', 1000, 50),
+    ('alfonso_000110', '1234', 'Alfonso', 60, 20)
+    """)
+
+    conn.commit()
+    conn.close()
+
+    print("MySQL conectado correctamente")
+
+except Exception as e:
+    print("Error MySQL:", e)
 
 # =========================
 # REWARDS
