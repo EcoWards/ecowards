@@ -3,6 +3,10 @@ from flask_cors import CORS
 import mysql.connector
 import os
 from datetime import datetime
+from werkzeug.security import (
+    generate_password_hash,
+    check_password_hash
+)
 
 app = Flask(__name__)
 CORS(app)
@@ -53,13 +57,6 @@ try:
         accion TEXT,
         fecha DATETIME
     )
-    """)
-
-    cursor.execute("""
-    INSERT IGNORE INTO users(username, password, nombre, ecoCoins, objetos)
-    VALUES
-    ('carlos_000145', '1234', 'Carlos', 1000, 50),
-    ('alfonso_000110', '1234', 'Alfonso', 60, 20)
     """)
 
     conn.commit()

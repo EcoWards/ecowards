@@ -1,5 +1,10 @@
 import { login } from "./api.js";
 
+/* 🔐 SI YA HAY SESIÓN */
+if (localStorage.getItem("session")) {
+  window.location.href = "index.html";
+}
+
 document.getElementById("loginForm")
 .addEventListener("submit", async (e) => {
 
@@ -24,4 +29,5 @@ document.getElementById("loginForm")
 
     window.location.href = "index.html";
   }
+
 });

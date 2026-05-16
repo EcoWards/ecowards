@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Crear Cuenta</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+  <div class="login-container">
+
+    <h1>🌱 Crear Cuenta</h1>
+
+    <form id="registerForm">
+
+      <input
+        type="text"
+        id="nombre"
+        placeholder="Nombre"
+        required
+      >
+
+      <input
+        type="text"
+        id="username"
+        placeholder="Usuario"
+        required
+      >
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Contraseña"
+        required
+      >
+
+      <button type="submit">
+        Crear Cuenta
+      </button>
+
+      <p id="errorMsg"></p>
+
+    </form>
+
+    <p style="margin-top:20px;">
+
+      ¿Ya tienes cuenta?
+
+      <a href="login.html">
+        Inicia sesión
+      </a>
+
+    </p>
+
+  </div>
+
+  <script type="module" src="register.js"></script>
+
+</body>
+</html>
