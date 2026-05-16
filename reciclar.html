@@ -1,41 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <link rel="icon" type="image/png" href="img/logo.jpeg">
+
+  <link rel="icon" type="image/png" href="img/logo.jpeg">
+
   <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>Reciclar</title>
+
   <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body class="login-body">
 
+  <div class="login-container">
 
-<div class="login-container">
+    <h2>♻️ Reciclar</h2>
 
-  <h2>Reciclar</h2>
+    <form id="reciclarForm">
 
-  <form id="reciclarForm">
+      <select id="tipo" required>
 
-    <select id="tipo">
-      <option value="botella">Botellas</option>
-      <option value="lata">Latas</option>
-      <option value="papel">Papel</option>
-      <option value="carton">Cartón</option>
-    </select>
+        <option value="botella">
+          Botellas
+        </option>
 
-    <input type="number" id="cantidad" placeholder="Cantidad" min="1" required>
+        <option value="lata">
+          Latas
+        </option>
 
-    <button type="submit">Reciclar</button>
+        <option value="papel">
+          Papel
+        </option>
 
-  </form>
+        <option value="carton">
+          Cartón
+        </option>
 
-  <button id="volver">← Volver</button>
+      </select>
 
-</div>
+      <input
+        type="number"
+        id="cantidad"
+        placeholder="Cantidad"
+        min="1"
+        required
+      >
 
-<div id="toastRecycle" class="toast-center hidden"></div>
+      <button type="submit">
+        Reciclar
+      </button>
 
-<canvas id="confettiCanvas"></canvas>
+    </form>
 
-<script src="reciclar.js"></script>
+    <button id="volver" type="button">
+      Volver
+    </button>
+
+  </div>
+
+  <!-- 💬 TOAST -->
+  <div
+    id="toastRecycle"
+    class="toast-center hidden"
+  ></div>
+
+  <!-- 🎉 CONFETTI -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- ✅ IMPORTANTE -->
+  <script
+    type="module"
+    src="reciclar.js"
+  ></script>
+
 </body>
 </html>

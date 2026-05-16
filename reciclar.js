@@ -1,9 +1,22 @@
 import { reciclar } from "./api.js";
 
-const form = document.getElementById("reciclarForm");
-const toast = document.getElementById("toastRecycle");
+/* 🔐 PROTEGER RUTA */
+if (!localStorage.getItem("session")) {
+  window.location.href = "login.html";
+}
 
+const form =
+  document.getElementById("reciclarForm");
+
+const toast =
+  document.getElementById("toastRecycle");
+
+const volverBtn =
+  document.getElementById("volver");
+
+/* 💬 TOAST */
 function showToast(msg) {
+
   toast.textContent = msg;
 
   toast.classList.remove("hidden");
@@ -13,40 +26,66 @@ function showToast(msg) {
   }, 10);
 
   setTimeout(() => {
+
     toast.classList.remove("show");
 
     setTimeout(() => {
       toast.classList.add("hidden");
     }, 300);
 
-  }, 3000);
+  }, 2500);
 }
 
+/* ♻️ RECICLAR */
 form.addEventListener("submit", async (e) => {
 
   e.preventDefault();
 
-  const tipo = document.getElementById("tipo").value;
+  const tipo =
+    document.getElementById("tipo").value;
 
   const cantidad = parseInt(
     document.getElementById("cantidad").value
   );
 
-  const res = await reciclar(tipo, cantidad);
+  if (!cantidad || cantidad <= 0) {
 
-  if (res.error) {
-    showToast(res.error);
+    showToast("Cantidad inválida");
+
     return;
   }
 
-  showToast(res.mensaje + " 🎉");
+  try {
 
-  setTimeout(() => {
+    const res = await reciclar(
+      tipo,
+      cantidad
+    );
+
+    if (res.error) {
+
+      showToast(res.error);
+      return;
+    }
+
+    showToast(res.mensaje + " 🎉");
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1500);
+
+  } catch (err) {
+
+    showToast("Error al reciclar");
+    console.error(err);
+  }
+});
+
+/* 🔙 VOLVER */
+if (volverBtn) {
+
+  volverBtn.addEventListener("click", () => {
+
     window.location.href = "index.html";
-  }, 2000);
-});
-
-document.getElementById("volver")
-.addEventListener("click", () => {
-  window.location.href = "index.html";
-});
+  });
+}
