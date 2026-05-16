@@ -12,11 +12,17 @@ CORS(app)
 # =========================
 def get_db():
 
+    host = os.environ.get("MYSQLHOST") or "mysql.railway.internal"
+
+    user = os.environ.get("MYSQLUSER")
+    password = os.environ.get("MYSQLPASSWORD")
+    database = os.environ.get("MYSQLDATABASE")
+
     conn = mysql.connector.connect(
-        host="mysql.railway.internal",
-        user="root",
-        password="abc123",
-        database="railway",
+        host=host,
+        user=user,
+        password=password,
+        database=database,
         port=3306
     )
 
