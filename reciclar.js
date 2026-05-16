@@ -51,7 +51,6 @@ form.addEventListener("submit", async (e) => {
   if (!cantidad || cantidad <= 0) {
 
     showToast("Cantidad inválida");
-
     return;
   }
 
@@ -68,16 +67,23 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
+    /* ✅ mensaje */
     showToast(res.mensaje + " 🎉");
 
+    /* ✅ refrescar dashboard */
     setTimeout(() => {
+
       window.location.href = "index.html";
+
     }, 1500);
 
   } catch (err) {
 
-    showToast("Error al reciclar");
     console.error(err);
+
+    showToast(
+      "Error al reciclar"
+    );
   }
 });
 
@@ -86,6 +92,7 @@ if (volverBtn) {
 
   volverBtn.addEventListener("click", () => {
 
-    window.location.href = "index.html";
+    window.location.href =
+      "index.html";
   });
 }

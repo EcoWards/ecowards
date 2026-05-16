@@ -94,19 +94,32 @@ def login():
 
         conn, cursor = get_db()
 
+        # buscar usuario
         cursor.execute("""
             SELECT *
             FROM users
-            WHERE username=%s AND password=%s
-        """, (username, password))
+            WHERE username=%s
+        """, (username,))
 
         user = cursor.fetchone()
 
         conn.close()
 
+        # usuario no existe
         if not user:
+
             return jsonify({
-                "error": "Usuario o contraseña incorrectos"
+                "error": "Usuario incorrecto"
+            }), 401
+
+        # verificar contraseña
+        if not check_password_hash(
+            user["password"],
+            password
+        ):
+
+            return jsonify({
+                "error": "Contraseña incorrecta"
             }), 401
 
         return jsonify({
@@ -116,6 +129,80 @@ def login():
         })
 
     except Exception as e:
+
+        return jsonify({
+            "error": str(e)
+        }), 500
+
+
+# =========================
+# REGISTER
+# =========================
+@app.route("/api/register", methods=["POST"])
+def register():
+
+    try:
+
+        data = request.json
+
+        username = data.get("username")
+        nombre = data.get("nombre")
+        password = data.get("password")
+
+        # validar campos
+        if not username or not nombre or not password:
+
+            return jsonify({
+                "error": "Completa todos los campos"
+            }), 400
+
+        conn, cursor = get_db()
+
+        # verificar si ya existe
+        cursor.execute("""
+            SELECT id
+            FROM users
+            WHERE username=%s
+        """, (username,))
+
+        existe = cursor.fetchone()
+
+        if existe:
+
+            conn.close()
+
+            return jsonify({
+                "error": "El usuario ya existe"
+            }), 400
+
+        # password segura
+        hashed = generate_password_hash(password)
+
+        # crear usuario
+        cursor.execute("""
+            INSERT INTO users(
+                username,
+                password,
+                nombre,
+                ecoCoins,
+                objetos
+            )
+            VALUES(%s,%s,%s,0,0)
+        """, (
+            username,
+            hashed,
+            nombre
+        ))
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "success": True
+        })
+
+    except Exception as e:
+
         return jsonify({
             "error": str(e)
         }), 500
@@ -385,69 +472,13 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=int(os.environ.get("PORT", 5000))
     )
+
 # =========================
-# REGISTER
+# RUN
 # =========================
-@app.route("/api/register", methods=["POST"])
-def register():
+if __name__ == "__main__":
 
-    try:
-
-        data = request.json
-
-        username = data.get("username")
-        nombre = data.get("nombre")
-        password = data.get("password")
-
-        if not username or not nombre or not password:
-
-            return jsonify({
-                "error": "Completa todos los campos"
-            }), 400
-
-        conn, cursor = get_db()
-
-        # verificar si ya existe
-        cursor.execute("""
-            SELECT id
-            FROM users
-            WHERE username=%s
-        """, (username,))
-
-        existe = cursor.fetchone()
-
-        if existe:
-
-            conn.close()
-
-            return jsonify({
-                "error": "El usuario ya existe"
-            }), 400
-
-        cursor.execute("""
-            INSERT INTO users(
-                username,
-                password,
-                nombre,
-                ecoCoins,
-                objetos
-            )
-            VALUES(%s,%s,%s,0,0)
-        """, (
-            username,
-            password,
-            nombre
-        ))
-
-        conn.commit()
-        conn.close()
-
-        return jsonify({
-            "success": True
-        })
-
-    except Exception as e:
-
-        return jsonify({
-            "error": str(e)
-        }), 500
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )
