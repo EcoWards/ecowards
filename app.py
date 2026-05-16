@@ -17,7 +17,7 @@ def get_db():
         user=os.environ.get("MYSQLUSER"),
         password=os.environ.get("MYSQLPASSWORD"),
         database=os.environ.get("MYSQLDATABASE"),
-        port=int(os.environ.get("MYSQLPORT"))
+        port=3306
     )
 
     return conn, conn.cursor(dictionary=True)
