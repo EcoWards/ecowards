@@ -385,3 +385,69 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=int(os.environ.get("PORT", 5000))
     )
+# =========================
+# REGISTER
+# =========================
+@app.route("/api/register", methods=["POST"])
+def register():
+
+    try:
+
+        data = request.json
+
+        username = data.get("username")
+        nombre = data.get("nombre")
+        password = data.get("password")
+
+        if not username or not nombre or not password:
+
+            return jsonify({
+                "error": "Completa todos los campos"
+            }), 400
+
+        conn, cursor = get_db()
+
+        # verificar si ya existe
+        cursor.execute("""
+            SELECT id
+            FROM users
+            WHERE username=%s
+        """, (username,))
+
+        existe = cursor.fetchone()
+
+        if existe:
+
+            conn.close()
+
+            return jsonify({
+                "error": "El usuario ya existe"
+            }), 400
+
+        cursor.execute("""
+            INSERT INTO users(
+                username,
+                password,
+                nombre,
+                ecoCoins,
+                objetos
+            )
+            VALUES(%s,%s,%s,0,0)
+        """, (
+            username,
+            password,
+            nombre
+        ))
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "success": True
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "error": str(e)
+        }), 500
