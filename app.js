@@ -285,20 +285,20 @@ const anuncios = [
   "img/ad3.png"
 ];
 
-let indexAd = 0;
+let currentAd = 0;
 
 if (adImage) {
 
   setInterval(() => {
 
-    indexAd++;
+    currentAd++;
 
-    if (indexAd >= anuncios.length) {
-      indexAd = 0;
+    if (currentAd >= anuncios.length) {
+      currentAd = 0;
     }
 
     adImage.src =
-      anuncios[indexAd];
+      anuncios[currentAd];
 
   }, 4000);
 }
