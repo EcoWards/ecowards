@@ -39,17 +39,25 @@ try:
 
     conn, cursor = get_db()
 
+    # USERS
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(100) UNIQUE,
-        password VARCHAR(100),
+        password VARCHAR(300),
         nombre VARCHAR(100),
         ecoCoins INT DEFAULT 0,
         objetos INT DEFAULT 0
     )
     """)
 
+    # asegurar tamaño correcto password
+    cursor.execute("""
+    ALTER TABLE users
+    MODIFY password VARCHAR(300)
+    """)
+
+    # HISTORIAL
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS historial (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -65,6 +73,7 @@ try:
     print("✅ MySQL conectado")
 
 except Exception as e:
+
     print("❌ Error MySQL:", e)
 
 # =========================
