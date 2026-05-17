@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <link rel="icon" type="image/png" href="img/logo.jpeg">
+
   <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>EcoWards</title>
+
   <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-
 <header class="topbar">
-  <div class="logo">EcoWards</div>
-  <button class="logout" id="logoutBtn">Cerrar sesión</button>
+
+  <div class="logo">
+    EcoWards
+  </div>
+
+  <button
+    class="logout"
+    id="logoutBtn"
+  >
+    Cerrar sesión
+  </button>
+
 </header>
 
 <main class="dashboard">
@@ -20,83 +41,182 @@
   <section class="left-panel">
 
     <div class="card user-card">
-      <h2>Bienvenido, <span id="username">Usuario</span></h2>
-      <p>EcoCoins: <span id="coins">0</span></p>
-      <p>Objetos reciclados: <span id="items">0</span></p>
+
+      <h2>
+        Bienvenido,
+        <span id="username">
+          Usuario
+        </span>
+      </h2>
+
+      <p>
+        EcoCoins:
+        <span id="coins">0</span>
+      </p>
+
+      <p>
+        Objetos reciclados:
+        <span id="items">0</span>
+      </p>
+
     </div>
 
+    <!-- 📢 ADS -->
+    <section class="ads-section">
+
+      <div class="ads-container">
+
+        <img
+          id="adImage"
+          src="img/ad1.png"
+          alt="Publicidad"
+        >
+
+      </div>
+
+    </section>
+
     <div class="card history-card">
-      <h3>Historial de reciclaje</h3>
+
+      <h3>
+        Historial de reciclaje
+      </h3>
+
       <ul id="history"></ul>
+
     </div>
 
   </section>
 
   <!-- CENTRO -->
   <section class="center-panel">
+
     <div class="card rewards-card">
-      <h3>Canjea</h3>
-      <div id="rewards" class="rewards-grid"></div>
+
+      <h3>
+        Canjea
+      </h3>
+
+      <div
+        id="rewards"
+        class="rewards-grid"
+      ></div>
+
     </div>
+
   </section>
 
   <!-- DERECHA -->
   <section class="right-panel">
 
     <div class="card ranking-card">
-      <h3>Ranking</h3>
+
+      <h3>
+        Ranking
+      </h3>
+
       <ol id="ranking"></ol>
+
     </div>
 
     <div class="card recycle-card">
-      <button id="recycleBtn">CLICK para reciclar</button>
+
+      <button id="recycleBtn">
+        CLICK para reciclar
+      </button>
+
     </div>
 
-<!-- NUEVA TABLA -->
-<div class="card price-card">
-  <h3>Valor por material</h3>
+    <!-- NUEVA TABLA -->
+    <div class="card price-card">
 
-  <div id="materials" class="materials-list"></div>
-</div>
+      <h3>
+        Valor por material
+      </h3>
+
+      <div
+        id="materials"
+        class="materials-list"
+      ></div>
+
+    </div>
+
   </section>
 
 </main>
 
 <footer class="steps">
-  <div>Paso 1: Recicla ♻️</div>
-  <div>Paso 2: Gana puntos 🪙</div>
-  <div>Paso 3: Canjea 🎁</div>
+
+  <div>
+    Paso 1: Recicla ♻️
+  </div>
+
+  <div>
+    Paso 2: Gana puntos 🪙
+  </div>
+
+  <div>
+    Paso 3: Canjea 🎁
+  </div>
+
 </footer>
 
+<!-- MODAL -->
 <div id="modal" class="modal hidden">
+
   <div class="modal-content">
 
     <!-- CONFIRMACION -->
     <div id="confirmView">
+
       <p id="modalText"></p>
+
       <div class="modal-buttons">
-        <button id="confirmBtn">Sí</button>
-        <button id="cancelBtn">No</button>
+
+        <button id="confirmBtn">
+          Sí
+        </button>
+
+        <button id="cancelBtn">
+          No
+        </button>
+
       </div>
+
     </div>
 
     <!-- CUPÓN -->
     <div id="couponView" class="hidden">
-      <h3>🎉 Canje exitoso</h3>
+
+      <h3>
+        🎉 Canje exitoso
+      </h3>
+
       <p id="couponReward"></p>
 
-      <div class="coupon-code" id="couponCode"></div>
+      <div
+        class="coupon-code"
+        id="couponCode"
+      ></div>
 
-      <button id="closeCoupon">Cerrar</button>
+      <button id="closeCoupon">
+        Cerrar
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
+<!-- TOAST -->
 <div id="toast" class="toast hidden"></div>
 
-<!-- IMPORTANTE: usar módulos -->
-<script type="module" src="app.js"></script>
+<!-- IMPORTANTE -->
+<script
+  type="module"
+  src="app.js"
+></script>
 
 </body>
 </html>
