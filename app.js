@@ -273,7 +273,7 @@ document.getElementById("recycleBtn")
 /* 🚀 INICIAR */
 loadDashboard();
 /* =========================
-   📢 ADS ROTATIVOS
+   📢 ADS
 ========================= */
 
 const adImage =
@@ -285,20 +285,20 @@ const anuncios = [
   "img/ad3.png"
 ];
 
-let adActual = 0;
+let indexAd = 0;
 
-function cambiarAd() {
+if (adImage) {
 
-  if (!adImage) return;
+  setInterval(() => {
 
-  adActual++;
+    indexAd++;
 
-  if (adActual >= anuncios.length) {
-    adActual = 0;
-  }
+    if (indexAd >= anuncios.length) {
+      indexAd = 0;
+    }
 
-  adImage.src =
-    anuncios[adActual];
+    adImage.src =
+      anuncios[indexAd];
+
+  }, 4000);
 }
-
-setInterval(cambiarAd, 5000);
