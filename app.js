@@ -194,7 +194,7 @@ confirmBtn.addEventListener("click", async () => {
   }
 
   loadDashboard();
-  /* =========================
+/* =========================
    📢 ADS ROTATIVOS
 ========================= */
 
@@ -202,7 +202,6 @@ const adImage =
   document.getElementById("adImage");
 
 const anuncios = [
-
   "img/ad1.png",
   "img/ad2.png",
   "img/ad3.png"
@@ -210,31 +209,38 @@ const anuncios = [
 
 let adActual = 0;
 
-function cambiarAd() {
+/* ✅ mostrar anuncio */
+function mostrarAd() {
 
   if (!adImage) return;
+
+  adImage.src = anuncios[adActual];
+}
+
+/* ✅ cambiar anuncio */
+function cambiarAd() {
+
+  adActual++;
+
+  if (adActual >= anuncios.length) {
+    adActual = 0;
+  }
 
   adImage.style.opacity = 0;
 
   setTimeout(() => {
 
-    adActual =
-      Math.floor(
-        Math.random() * anuncios.length
-      );
-
-    adImage.src =
-      anuncios[adActual];
+    mostrarAd();
 
     adImage.style.opacity = 1;
 
-  }, 400);
+  }, 300);
 }
 
-/* primera carga */
-cambiarAd();
+/* ✅ cargar primero */
+mostrarAd();
 
-/* rotación */
+/* 🔄 rotación */
 setInterval(cambiarAd, 5000);
 });
 
