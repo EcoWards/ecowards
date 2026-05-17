@@ -280,7 +280,6 @@ const adImage =
   document.getElementById("adImage");
 
 const anuncios = [
-
   "img/ad1.png",
   "img/ad2.png",
   "img/ad3.png"
@@ -292,22 +291,14 @@ function cambiarAd() {
 
   if (!adImage) return;
 
-  adImage.style.opacity = 0;
+  adActual++;
 
-  setTimeout(() => {
+  if (adActual >= anuncios.length) {
+    adActual = 0;
+  }
 
-    adActual =
-      Math.floor(
-        Math.random() * anuncios.length
-      );
-
-    adImage.src =
-      anuncios[adActual];
-
-    adImage.style.opacity = 1;
-
-  }, 400);
+  adImage.src = anuncios[adActual];
 }
 
-/* 🔄 cambiar cada 5 segundos */
-setInterval(cambiarAd, 5000);
+/* 🔄 cambiar cada 4 segundos */
+setInterval(cambiarAd, 4000);
