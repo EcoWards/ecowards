@@ -194,6 +194,48 @@ confirmBtn.addEventListener("click", async () => {
   }
 
   loadDashboard();
+  /* =========================
+   📢 ADS ROTATIVOS
+========================= */
+
+const adImage =
+  document.getElementById("adImage");
+
+const anuncios = [
+
+  "img/ad1.png",
+  "img/ad2.png",
+  "img/ad3.png"
+];
+
+let adActual = 0;
+
+function cambiarAd() {
+
+  if (!adImage) return;
+
+  adImage.style.opacity = 0;
+
+  setTimeout(() => {
+
+    adActual =
+      Math.floor(
+        Math.random() * anuncios.length
+      );
+
+    adImage.src =
+      anuncios[adActual];
+
+    adImage.style.opacity = 1;
+
+  }, 400);
+}
+
+/* primera carga */
+cambiarAd();
+
+/* rotación */
+setInterval(cambiarAd, 5000);
 });
 
 /* ❌ CANCELAR */
