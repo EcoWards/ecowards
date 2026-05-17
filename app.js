@@ -13,30 +13,52 @@ if (!localStorage.getItem("session")) {
 }
 
 /* 🚪 LOGOUT */
-document.getElementById("logoutBtn").addEventListener("click", () => {
+document.getElementById("logoutBtn")
+.addEventListener("click", () => {
+
   localStorage.removeItem("session");
   localStorage.removeItem("user");
+
   window.location.href = "login.html";
 });
 
 /* 📦 MODAL */
-const modal = document.getElementById("modal");
-const modalText = document.getElementById("modalText");
-const confirmBtn = document.getElementById("confirmBtn");
-const cancelBtn = document.getElementById("cancelBtn");
+const modal =
+  document.getElementById("modal");
 
-/* 🔥 NUEVOS */
-const confirmView = document.getElementById("confirmView");
-const couponView = document.getElementById("couponView");
-const couponCode = document.getElementById("couponCode");
-const couponReward = document.getElementById("couponReward");
-const closeCoupon = document.getElementById("closeCoupon");
+const modalText =
+  document.getElementById("modalText");
+
+const confirmBtn =
+  document.getElementById("confirmBtn");
+
+const cancelBtn =
+  document.getElementById("cancelBtn");
+
+const confirmView =
+  document.getElementById("confirmView");
+
+const couponView =
+  document.getElementById("couponView");
+
+const couponCode =
+  document.getElementById("couponCode");
+
+const couponReward =
+  document.getElementById("couponReward");
+
+const closeCoupon =
+  document.getElementById("closeCoupon");
 
 let rewardSeleccionado = null;
 
 /* 🎲 GENERAR CÓDIGO */
 function generarCodigo() {
-  return Math.random().toString(36).substring(2, 10).toUpperCase();
+
+  return Math.random()
+    .toString(36)
+    .substring(2, 10)
+    .toUpperCase();
 }
 
 /* 🔄 CARGAR DASHBOARD */
@@ -44,54 +66,83 @@ async function loadDashboard() {
 
   const user = await getUser();
 
-  document.getElementById("username").textContent = user.nombre;
-  document.getElementById("coins").textContent = user.ecoCoins;
-  document.getElementById("items").textContent = user.objetos;
+  document.getElementById("username")
+    .textContent = user.nombre;
+
+  document.getElementById("coins")
+    .textContent = user.ecoCoins;
+
+  document.getElementById("items")
+    .textContent = user.objetos;
 
   /* HISTORIAL */
-  const historyList = document.getElementById("history");
-  const historial = await getHistorial();
+  const historyList =
+    document.getElementById("history");
+
+  const historial =
+    await getHistorial();
 
   historyList.innerHTML = "";
 
   historial.forEach(item => {
-    const li = document.createElement("li");
+
+    const li =
+      document.createElement("li");
+
     li.textContent = item;
+
     historyList.appendChild(li);
   });
 
   /* REWARDS */
-  const rewardsContainer = document.getElementById("rewards");
-  const rewards = await getRewards();
+  const rewardsContainer =
+    document.getElementById("rewards");
+
+  const rewards =
+    await getRewards();
 
   rewardsContainer.innerHTML = "";
 
   rewards.forEach(r => {
 
-    const div = document.createElement("div");
+    const div =
+      document.createElement("div");
+
     div.className = "reward";
 
-    const btn = document.createElement("button");
+    const btn =
+      document.createElement("button");
 
     if (user.ecoCoins < r.costo) {
 
       btn.disabled = true;
-      btn.classList.add("btn-disabled");
-      btn.textContent = "No alcanza";
+
+      btn.classList.add(
+        "btn-disabled"
+      );
+
+      btn.textContent =
+        "No alcanza";
 
     } else {
 
-      btn.textContent = "Canjear";
+      btn.textContent =
+        "Canjear";
 
-      btn.addEventListener("click", () => {
+      btn.addEventListener(
+        "click",
+        () => {
 
-        rewardSeleccionado = r;
+          rewardSeleccionado = r;
 
-        modalText.textContent =
-          `¿Seguro que quieres canjear ${r.nombre} por ${r.costo} EcoCoins?`;
+          modalText.textContent =
+            `¿Seguro que quieres canjear ${r.nombre} por ${r.costo} EcoCoins?`;
 
-        modal.classList.remove("hidden");
-      });
+          modal.classList.remove(
+            "hidden"
+          );
+        }
+      );
     }
 
     div.innerHTML = `
@@ -100,32 +151,46 @@ async function loadDashboard() {
     `;
 
     div.appendChild(btn);
+
     rewardsContainer.appendChild(div);
   });
 
   /* RANKING */
-  const rankingList = document.getElementById("ranking");
-  const ranking = await getRanking();
+  const rankingList =
+    document.getElementById("ranking");
+
+  const ranking =
+    await getRanking();
 
   rankingList.innerHTML = "";
 
   ranking.forEach(r => {
-    const li = document.createElement("li");
-    li.textContent = `${r.nombre} - ${r.puntos}`;
+
+    const li =
+      document.createElement("li");
+
+    li.textContent =
+      `${r.nombre} - ${r.puntos}`;
+
     rankingList.appendChild(li);
   });
 
   /* MATERIALES */
-  const materialsContainer = document.getElementById("materials");
+  const materialsContainer =
+    document.getElementById("materials");
 
-  const materiales = await getMateriales();
+  const materiales =
+    await getMateriales();
 
   materialsContainer.innerHTML = "";
 
   materiales.forEach(m => {
 
-    const div = document.createElement("div");
-    div.className = "material-item";
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "material-item";
 
     div.innerHTML = `
       <span>${m.nombre}</span>
@@ -139,7 +204,8 @@ async function loadDashboard() {
 /* 💬 TOAST */
 function showToast(message) {
 
-  const toast = document.getElementById("toast");
+  const toast =
+    document.getElementById("toast");
 
   if (!toast) return;
 
@@ -163,22 +229,36 @@ function showToast(message) {
 }
 
 /* ✅ CONFIRMAR CANJE */
-confirmBtn.addEventListener("click", async () => {
+confirmBtn.addEventListener(
+  "click",
+  async () => {
 
-  if (!rewardSeleccionado) return;
+    if (!rewardSeleccionado)
+      return;
 
-  const res = await canjear(rewardSeleccionado.id);
+    const res =
+      await canjear(
+        rewardSeleccionado.id
+      );
 
-  if (res.error) {
-    showToast(res.error);
-    modal.classList.add("hidden");
-    return;
-  }
+    if (res.error) {
 
-  if (confirmView && couponView && couponCode && couponReward) {
+      showToast(res.error);
 
-    confirmView.classList.add("hidden");
-    couponView.classList.remove("hidden");
+      modal.classList.add(
+        "hidden"
+      );
+
+      return;
+    }
+
+    confirmView.classList.add(
+      "hidden"
+    );
+
+    couponView.classList.remove(
+      "hidden"
+    );
 
     couponReward.textContent =
       rewardSeleccionado.nombre;
@@ -186,94 +266,56 @@ confirmBtn.addEventListener("click", async () => {
     couponCode.textContent =
       generarCodigo();
 
-  } else {
-
-    showToast(`Canjeaste ${rewardSeleccionado.nombre} 🎉`);
-
-    modal.classList.add("hidden");
+    loadDashboard();
   }
-
-  loadDashboard();
-/* =========================
-   📢 ADS ROTATIVOS
-========================= */
-
-const adImage =
-  document.getElementById("adImage");
-
-const anuncios = [
-  "img/ad1.png",
-  "img/ad2.png",
-  "img/ad3.png"
-];
-
-let adActual = 0;
-
-/* ✅ mostrar anuncio */
-function mostrarAd() {
-
-  if (!adImage) return;
-
-  adImage.src = anuncios[adActual];
-}
-
-/* ✅ cambiar anuncio */
-function cambiarAd() {
-
-  adActual++;
-
-  if (adActual >= anuncios.length) {
-    adActual = 0;
-  }
-
-  adImage.style.opacity = 0;
-
-  setTimeout(() => {
-
-    mostrarAd();
-
-    adImage.style.opacity = 1;
-
-  }, 300);
-}
-
-/* ✅ cargar primero */
-mostrarAd();
-
-/* 🔄 rotación */
-setInterval(cambiarAd, 5000);
-});
+);
 
 /* ❌ CANCELAR */
-cancelBtn.addEventListener("click", () => {
-  modal.classList.add("hidden");
-});
+cancelBtn.addEventListener(
+  "click",
+  () => {
+
+    modal.classList.add(
+      "hidden"
+    );
+  }
+);
 
 /* 🔒 CERRAR CUPÓN */
 if (closeCoupon) {
 
-  closeCoupon.addEventListener("click", () => {
+  closeCoupon.addEventListener(
+    "click",
+    () => {
 
-    modal.classList.add("hidden");
+      modal.classList.add(
+        "hidden"
+      );
 
-    if (couponView && confirmView) {
+      couponView.classList.add(
+        "hidden"
+      );
 
-      couponView.classList.add("hidden");
-      confirmView.classList.remove("hidden");
+      confirmView.classList.remove(
+        "hidden"
+      );
     }
-  });
+  );
 }
 
 /* ♻️ BOTÓN RECICLAR */
 document.getElementById("recycleBtn")
 .addEventListener("click", () => {
-  window.location.href = "reciclar.html";
+
+  window.location.href =
+    "reciclar.html";
 });
 
 /* 🚀 INICIAR */
 loadDashboard();
+
 /* =========================
-   📢 ADS
+   📢 ADS ROTATIVOS
 ========================= */
 
 const adImage =
@@ -293,7 +335,9 @@ if (adImage) {
 
     currentAd++;
 
-    if (currentAd >= anuncios.length) {
+    if (
+      currentAd >= anuncios.length
+    ) {
       currentAd = 0;
     }
 
