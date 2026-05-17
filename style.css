@@ -24,13 +24,17 @@ html, body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* DASHBOARD */
 .dashboard {
+
   flex: 1;
   display: grid;
   grid-template-columns: 1.2fr 1fr 0.8fr;
   gap: 20px;
   padding: 20px;
+
+  height: calc(100vh - 70px);
+
+  overflow: visible;
 }
 
 /* FOOTER */
@@ -76,13 +80,17 @@ html, body {
   font-size: 15px;
 }
 
-/* LAYOUT PANELS */
-.left-panel, 
-.center-panel, 
+.left-panel,
+.center-panel,
 .right-panel {
+
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  min-height: 0;
+
+  overflow: visible;
 }
 
 /* LOGIN */
