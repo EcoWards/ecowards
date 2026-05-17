@@ -571,9 +571,11 @@ html, body {
    📢 ADS
 ========================= */
 
-.ads-wrapper {
+.ads-card {
 
-  width: 100%;
+  padding: 0;
+
+  overflow: hidden;
 
   display: flex;
 
@@ -581,24 +583,16 @@ html, body {
 
   align-items: center;
 
-  margin: 10px 0 20px 0;
+  min-height: 160px;
 }
 
-.ad-banner {
+.ads-card img {
 
   width: 100%;
 
-  max-width: 520px;
-
-  height: 150px;
+  height: 160px;
 
   object-fit: cover;
 
-  border-radius: 18px;
-
   display: block;
-
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-
-  transition: opacity 0.4s ease;
 }
