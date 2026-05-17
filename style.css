@@ -567,3 +567,34 @@ html, body {
     display: none;
   }
 }
+/* =========================
+   📢 TOP ADS
+========================= */
+
+.top-ad {
+
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  padding: 15px 20px 0 20px;
+}
+
+.top-ad img {
+
+  width: 100%;
+
+  max-width: 1200px;
+
+  height: 140px;
+
+  object-fit: cover;
+
+  border-radius: 14px;
+
+  box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+
+  display: block;
+}
