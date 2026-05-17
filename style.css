@@ -392,3 +392,12 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* BOTÓN DESHABILITADO */
+.btn-disabled {
+
+  background: #e85c55 !important;
+
+  cursor: not-allowed;
+
+  opacity: 0.95;
+}
