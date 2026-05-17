@@ -567,3 +567,38 @@ html, body {
     display: none;
   }
 }
+/* =========================
+   📢 ADS
+========================= */
+
+.ads-wrapper {
+
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  margin: 10px 0 20px 0;
+}
+
+.ad-banner {
+
+  width: 100%;
+
+  max-width: 520px;
+
+  height: 150px;
+
+  object-fit: cover;
+
+  border-radius: 18px;
+
+  display: block;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+  transition: opacity 0.4s ease;
+}

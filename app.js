@@ -291,14 +291,23 @@ function cambiarAd() {
 
   if (!adImage) return;
 
-  adActual++;
+  adImage.style.opacity = 0;
 
-  if (adActual >= anuncios.length) {
-    adActual = 0;
-  }
+  setTimeout(() => {
 
-  adImage.src = anuncios[adActual];
+    adActual++;
+
+    if (adActual >= anuncios.length) {
+      adActual = 0;
+    }
+
+    adImage.src =
+      anuncios[adActual];
+
+    adImage.style.opacity = 1;
+
+  }, 250);
 }
 
-/* 🔄 cambiar cada 4 segundos */
-setInterval(cambiarAd, 4000);
+/* iniciar */
+setInterval(cambiarAd, 5000);
