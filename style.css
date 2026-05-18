@@ -172,9 +172,9 @@ body {
 
 .login-container {
 
-  width: 100%;
+  width: 420px;
 
-  max-width: 420px;
+  min-height: 460px;
 
   background: white;
 
